@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
 
     public bool atMainMenu;
 
+    float levelTimer = 60f;
+    public float timeLeft;
+
+    Text timerText;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -83,5 +88,30 @@ public class GameManager : MonoBehaviour
         introAnimationCanvas.blocksRaycasts = false;
 
         levelOne.SetActive(true);
+        timerText = GameObject.Find("TimeText").GetComponent<Text>();
+
+        StartCoroutine(StartLevelTimer());
+    }
+
+    private IEnumerator StartLevelTimer()
+    {
+        float levelStartTime = Time.time;
+        float levelEndTime = Time.time + levelTimer;
+
+        timeLeft = Mathf.Abs(levelEndTime - levelStartTime);
+
+        while(timeLeft >= 0)
+        {
+            timeLeft = Mathf.Abs(levelEndTime - Time.time);
+            yield return new WaitForEndOfFrame();
+            timerText.text = "Time: " + Mathf.Round(timeLeft);           
+        }
+
+        yield return null;
+
+        //Game Over
+        //increment day by one
+        //have press any key to restart
+        //
     }
 }
