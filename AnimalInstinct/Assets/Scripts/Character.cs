@@ -4,7 +4,6 @@ using System.Collections;
 public class Character : MonoBehaviour
 {
 
-
 	public CharacterType type;
 	public int speed = 1;
 	public int jump = 1;
@@ -12,16 +11,22 @@ public class Character : MonoBehaviour
 
 	Rigidbody2D characterRigidBody;
 
+    public bool canMove;
+
 	// Use this for initialization
 	void Start ()
 	{
 		characterRigidBody = GetComponent<Rigidbody2D> ();
+        canMove = false;
 	}
 	
 	// Update is called once per frame
 	void Update ()
 	{
-		Move ();
+        if (canMove)
+        {
+            Move();
+        }
 	}
 
 	private void Move ()
