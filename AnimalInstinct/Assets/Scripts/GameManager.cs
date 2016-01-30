@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,10 +29,19 @@ public class GameManager : MonoBehaviour
 
     Text timerText;
 
+    public Transform firstLoad;
+
+    void Awake()
+    {
+        if (firstLoad)
+        {
+            DontDestroyOnLoad(firstLoad);
+        }
+    }
+
 	// Use this for initialization
 	void Start ()
     {
-        
         mainMenuCanvas= GameObject.Find("MainMenuCanvas").GetComponent<CanvasGroup>();
         introAnimationCanvas = GameObject.Find("IntroCanvas").GetComponent<CanvasGroup>();
         gameCanvas   = GameObject.Find("GameCanvas").GetComponent<CanvasGroup>();
@@ -41,9 +51,15 @@ public class GameManager : MonoBehaviour
         ownerReturnsAnimation = GameObject.Find("OwnerReturnsAnimation");
 
         characters = GameObject.FindObjectsOfType<Character>();
-        
 
-        showMainMenu();
+        if (FirstLoad.firstLoad)
+        {
+            showMainMenu();
+        }
+        else
+        {
+            StartGame();
+        }
     }
 
     private void showMainMenu()
@@ -68,6 +84,7 @@ public class GameManager : MonoBehaviour
         atMainMenu = true;
         atRetry = false;
         allowCharacterMovement = false;
+        FirstLoad.firstLoad = false;
 
     }
 
@@ -94,6 +111,7 @@ public class GameManager : MonoBehaviour
             {
                 atRetry = false;
                 StartGame();
+                SceneManager.LoadScene(0);
             }
 
         }
@@ -154,8 +172,10 @@ public class GameManager : MonoBehaviour
 
     private void StartGame()
     {
+        ToggleCanvas(mainMenuCanvas, false);
         ToggleCanvas(introAnimationCanvas, false);
         ToggleCanvas(retryPanel, false);
+        ownerReturnsAnimation.SetActive(false);
 
         ToggleCanvas(gameCanvas, true);
 
@@ -167,6 +187,10 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartLevelTimer());
 
         ToggleCharacterMovement(true);
+
+        FirstLoad.firstLoad = false;
+
+        inGame = true;
     }
 
     private IEnumerator StartLevelTimer()
