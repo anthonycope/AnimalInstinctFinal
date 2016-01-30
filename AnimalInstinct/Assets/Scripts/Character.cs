@@ -31,7 +31,7 @@ public class Character : MonoBehaviour
 	}
 
 	void OnCollisionEnter2D(Collision2D other){
-		if(other.gameObject.tag.Equals("Enemy")){
+		if(other.gameObject.tag.Equals("Enemy") && type == CharacterType.Cat){
 			StartCoroutine (CharacterHit ());
 		}
 	}
