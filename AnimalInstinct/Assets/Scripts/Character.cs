@@ -4,6 +4,8 @@ using System.Collections;
 public class Character : MonoBehaviour
 {
 
+
+	public CharacterType type;
 	public int speed = 1;
 	public int jump = 1;
 	public bool flying = false;
