@@ -7,7 +7,6 @@ public class Character : MonoBehaviour
 	public CharacterType type;
 	public int speed = 1;
 	public int jump = 1;
-	public bool flying = false;
 
 	Rigidbody2D characterRigidBody;
 
@@ -17,7 +16,7 @@ public class Character : MonoBehaviour
 	void Start ()
 	{
 		characterRigidBody = GetComponent<Rigidbody2D> ();
-        canMove = false;
+        //canMove = false;
 	}
 	
 	// Update is called once per frame
@@ -35,12 +34,8 @@ public class Character : MonoBehaviour
 		float vertical = Input.GetAxis ("Vertical");
 
 		//Only jump if character hasn't jump already
-		if ((characterRigidBody.velocity.y == 0 && vertical > 0) || (flying && vertical > 0 && characterRigidBody.velocity.y < 0)) {
-			if (flying) {
+		if ((characterRigidBody.velocity.y == 0 && vertical > 0) || (type == CharacterType.Dragon && vertical > 0 && characterRigidBody.velocity.y < 0)) {
 				characterRigidBody.AddForce (new Vector2 (0, jump), ForceMode2D.Impulse);
-			} else {
-				characterRigidBody.AddForce (new Vector2 (0, jump), ForceMode2D.Impulse);
-			}
 		}
 
 		characterRigidBody.velocity = new Vector2 (horizonal * speed, characterRigidBody.velocity.y);
