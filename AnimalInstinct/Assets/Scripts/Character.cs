@@ -8,7 +8,8 @@ public class Character : MonoBehaviour
 	public int speed = 1;
 	public int jump = 1;
 
-	Rigidbody2D characterRigidBody;
+	private Rigidbody2D characterRigidBody;
+	private Renderer myRenderer;
 
     public bool canMove;
 
@@ -16,6 +17,7 @@ public class Character : MonoBehaviour
 	void Start ()
 	{
 		characterRigidBody = GetComponent<Rigidbody2D> ();
+		myRenderer = GetComponent<Renderer> ();
         //canMove = false;
 	}
 	
@@ -26,6 +28,12 @@ public class Character : MonoBehaviour
         {
             Move();
         }
+	}
+
+	void OnCollisionEnter2D(Collision2D other){
+		if(other.gameObject.tag.Equals("Enemy")){
+			StartCoroutine (CharacterHit ());
+		}
 	}
 
 	private void Move ()
@@ -39,6 +47,18 @@ public class Character : MonoBehaviour
 		}
 
 		characterRigidBody.velocity = new Vector2 (horizonal * speed, characterRigidBody.velocity.y);
+	}
+
+	private IEnumerator CharacterHit(){
+		int initialSpped = speed;
+		speed = 1;
+		myRenderer.material.color = new Color (myRenderer.material.color.r, myRenderer.material.color.g, myRenderer.material.color.b, 0.5F);
+		yield return new WaitForSeconds (3F);
+
+		speed = initialSpped;
+		myRenderer.material.color = new Color (myRenderer.material.color.r, myRenderer.material.color.g, myRenderer.material.color.b, 1F);
+
+
 	}
 
 }
