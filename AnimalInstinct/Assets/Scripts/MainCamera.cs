@@ -1,0 +1,37 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class MainCamera : MonoBehaviour
+{
+	public float dampTime = 0.15f;
+
+
+	private Transform player;
+	private Vector3 nonMovingCameraLocation;
+	private Vector3 velocity = Vector3.zero;
+
+
+	// Use this for initialization
+	void Start ()
+	{
+		player = GameObject.FindGameObjectWithTag ("Player").transform;
+	}
+	
+	// Update is called once per frame
+	void Update ()
+	{
+	
+	}
+
+	void LateUpdate ()
+	{
+		Vector3 point = GetComponent<Camera> ().WorldToViewportPoint (player.position);
+		Vector3 delta = player.position - GetComponent<Camera> ().ViewportToWorldPoint (new Vector3 (0.5f, 0.40f, 5F)); 
+		Vector3 destination = transform.position + delta;
+
+		nonMovingCameraLocation = new Vector3 (player.position.x, player.position.y, -5F);
+
+		transform.position = Vector3.SmoothDamp (transform.position, nonMovingCameraLocation, ref velocity, dampTime);
+
+	}
+}
