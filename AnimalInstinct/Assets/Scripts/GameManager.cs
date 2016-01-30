@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private bool allowCharacterMovement;
 
-    float levelTimer = 5f;
+    float levelTimer = 60f;
     public float timeLeft;
 
     Character[] characters;
@@ -88,6 +88,46 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void SwitchCharacter(int type)
+    {
+        //cat
+        if (type == 0)
+        {
+            foreach (Character c in characters)
+            {
+                if (c.type == CharacterType.Cat)
+                {
+                    c.canMove = true;
+                    c.gameObject.tag = "Player";
+                }
+                else
+                {
+                    c.canMove = false;
+                    c.gameObject.tag = "Untagged";
+                }
+            }
+        }
+        //dog
+        else if(type == 1 )
+        {
+            foreach (Character c in characters)
+            {
+                if (c.type == CharacterType.Dog)
+                {
+                    c.canMove = true;
+                    c.gameObject.tag = "Player";
+                }
+                else
+                {
+                    c.canMove = false;
+                    c.gameObject.tag = "Untagged";
+                }
+            }
+
+        }
+
+    }
+
     // Update is called once per frame
     void Update ()
     {
@@ -118,7 +158,7 @@ public class GameManager : MonoBehaviour
         else if(inGame)
         {
             //allow charactermovement
-            ToggleCharacterMovement(true);
+            //ToggleCharacterMovement(true);
 
         }
     }
@@ -127,10 +167,15 @@ public class GameManager : MonoBehaviour
     {
         if (on)
         {
+            /*
             foreach (Character character in characters)
             {
                 character.canMove = true;
-            }
+                
+            }*/
+
+            SwitchCharacter(0);
+
         }
         else
         {
@@ -233,7 +278,6 @@ public class GameManager : MonoBehaviour
 
     public void ReduceTime()
     {
-
-
+        
     }
 }

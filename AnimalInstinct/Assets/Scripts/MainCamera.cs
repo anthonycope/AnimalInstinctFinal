@@ -23,6 +23,18 @@ public class MainCamera : MonoBehaviour
 	
 	}
 
+    public void SwitchPlayer()
+    {
+        
+        GameObject temp;
+        temp = GameObject.FindGameObjectWithTag("Player");
+        if (temp != null)
+        {
+            player = temp.transform;
+
+        }
+
+    }
 	void LateUpdate ()
 	{
         if (player == null)

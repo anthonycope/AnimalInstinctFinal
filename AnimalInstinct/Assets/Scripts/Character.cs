@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class Character : MonoBehaviour
 {
@@ -18,12 +19,31 @@ public class Character : MonoBehaviour
 	{
 		characterRigidBody = GetComponent<Rigidbody2D> ();
         canMove = false;
+
+        if (type == CharacterType.Dog)
+        {
+            InitializeDog();
+        }
+        else if(type == CharacterType.Cat)
+        {
+            InitializeCat();
+        }
 	}
-	
-	// Update is called once per frame
-	void Update ()
+
+    private void InitializeCat()
+    {
+        canMove = true;
+    }
+
+    private void InitializeDog()
+    {
+        canMove = false;
+    }
+
+    // Update is called once per frame
+    void Update ()
 	{
-        if (canMove)
+        if (canMove )
         {
             Move();
         }
