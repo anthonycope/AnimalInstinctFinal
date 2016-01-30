@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         introAnimationCanvas.interactable = true;
         introAnimationCanvas.blocksRaycasts = true;
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(.1f);
 
         StartGame();
 

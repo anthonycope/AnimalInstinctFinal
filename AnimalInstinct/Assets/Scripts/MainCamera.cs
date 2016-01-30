@@ -14,7 +14,7 @@ public class MainCamera : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		player = GameObject.FindGameObjectWithTag ("Player").transform;
+		
 	}
 	
 	// Update is called once per frame
@@ -25,13 +25,27 @@ public class MainCamera : MonoBehaviour
 
 	void LateUpdate ()
 	{
-		Vector3 point = GetComponent<Camera> ().WorldToViewportPoint (player.position);
-		Vector3 delta = player.position - GetComponent<Camera> ().ViewportToWorldPoint (new Vector3 (0.5f, 0.40f, 5F)); 
-		Vector3 destination = transform.position + delta;
+        if (player == null)
+        {
+            GameObject temp;
+            temp = GameObject.FindGameObjectWithTag("Player");
+            if(temp!= null)
+            {
+                player = temp.transform;
 
-		nonMovingCameraLocation = new Vector3 (player.position.x, player.position.y, -5F);
+            }
+            
+        }
+        else
+        {
+            Vector3 point = GetComponent<Camera>().WorldToViewportPoint(player.position);
+            Vector3 delta = player.position - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.40f, 5F));
+            Vector3 destination = transform.position + delta;
 
-		transform.position = Vector3.SmoothDamp (transform.position, nonMovingCameraLocation, ref velocity, dampTime);
+            nonMovingCameraLocation = new Vector3(player.position.x, player.position.y, -5F);
+
+            transform.position = Vector3.SmoothDamp(transform.position, nonMovingCameraLocation, ref velocity, dampTime);
+        }
 
 	}
 }
