@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private bool allowCharacterMovement;
 
-    float levelTimer = 60f;
+    float levelTimer = 300f;
     public float timeLeft;
 
     Character[] characters;
@@ -281,7 +281,7 @@ public class GameManager : MonoBehaviour
 
         ToggleCanvas(introAnimationCanvas, true);
 
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(4f);
 
         StartGame();
 
@@ -340,7 +340,7 @@ public class GameManager : MonoBehaviour
         {
             timeLeft = levelEndTime - Time.time;
             yield return new WaitForEndOfFrame();
-            timerText.text = "Time: " + Mathf.Round(timeLeft);
+            //timerText.text = "Time: " + Mathf.Round(timeLeft);
             Color newBackground = timerText.transform.parent.GetComponent<Image>().color;
             newBackground.a = Mathf.Lerp(1f, 0f, ((timeLeft / levelTimer)));
            
