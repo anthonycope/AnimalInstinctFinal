@@ -110,9 +110,12 @@ public class GameManager : MonoBehaviour
 		StopTimer();
 		ToggleCanvas(winCanvas, true);
 
+        Color newBackground = timerText.transform.parent.GetComponent<Image>().color;
+        newBackground.a = 0f;
 
+        timerText.transform.parent.GetComponent<Image>().color = newBackground;
 
-		yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
 		ToggleCanvas(winCanvas, false);
 
@@ -123,6 +126,8 @@ public class GameManager : MonoBehaviour
 		Camera.main.GetComponent<MainCamera>().SwitchPlayer();
 
 		ToggleCanvas(winRetryPanel, true);
+
+
 
 		yield return null;
 	}
