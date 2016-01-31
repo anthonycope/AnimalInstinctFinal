@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     CanvasGroup gameCanvas;
     CanvasGroup retryPanel;
     CanvasGroup winCanvas;
+    CanvasGroup dragonButton;
+    CanvasGroup winRetryPanel;
 
     GameObject levelOne;
 
@@ -34,6 +36,10 @@ public class GameManager : MonoBehaviour
 
     private float timeLost;
 
+    private Coroutine timer;
+
+    private bool stopTimer;
+
     void Awake()
     {
         if (firstLoad)
@@ -52,6 +58,8 @@ public class GameManager : MonoBehaviour
         gameCanvas   = GameObject.Find("GameCanvas").GetComponent<CanvasGroup>();
         retryPanel = GameObject.Find("RetryPanel").GetComponent<CanvasGroup>();
         winCanvas = GameObject.Find("WinCanvas").GetComponent<CanvasGroup>();
+        dragonButton = GameObject.Find("DragonButton").GetComponent<CanvasGroup>();
+        winRetryPanel = GameObject.Find("WinRetryPanel").GetComponent<CanvasGroup>();
         levelOne = GameObject.Find("LevelOne");
 
         ownerReturnsAnimation = GameObject.Find("OwnerReturnsAnimation");
@@ -76,14 +84,22 @@ public class GameManager : MonoBehaviour
     private IEnumerator showBeast()
     {
 
+        StopTimer();
         ToggleCanvas(winCanvas, true);
+
+
 
         yield return new WaitForSeconds(1.5f);
 
         ToggleCanvas(winCanvas, false);
 
+
+        ToggleCanvas(dragonButton, true);
+
         SwitchCharacter(2);
         Camera.main.GetComponent<MainCamera>().SwitchPlayer();
+
+        ToggleCanvas(winRetryPanel, true);
 
         yield return null;
     }
@@ -108,6 +124,8 @@ public class GameManager : MonoBehaviour
         mainMenuCanvas.blocksRaycasts = true;
 
         ToggleCanvas(winCanvas, false);
+        ToggleCanvas(dragonButton, false);
+        ToggleCanvas(winRetryPanel, false);
 
         atMainMenu = true;
         atRetry = false;
@@ -193,9 +211,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.anyKeyDown)
             {
-                atRetry = false;
-                StartGame();
-                SceneManager.LoadScene(0);
+                Restart();
             }
 
         }
@@ -205,6 +221,13 @@ public class GameManager : MonoBehaviour
             //ToggleCharacterMovement(true);
 
         }
+    }
+
+    public void Restart()
+    {
+        atRetry = false;
+        StartGame();
+        SceneManager.LoadScene(0);
     }
 
     private void ToggleCharacterMovement(bool on)
@@ -266,6 +289,8 @@ public class GameManager : MonoBehaviour
         ToggleCanvas(retryPanel, false);
         ownerReturnsAnimation.SetActive(false);
         ToggleCanvas(winCanvas, false);
+        ToggleCanvas(dragonButton, false);
+        ToggleCanvas(winRetryPanel, false);
 
         ToggleCanvas(gameCanvas, true);
 
@@ -274,7 +299,7 @@ public class GameManager : MonoBehaviour
         levelOne.SetActive(true);
         timerText = GameObject.Find("TimeText").GetComponent<Text>();
 
-        StartCoroutine(StartLevelTimer());
+        timer = StartCoroutine(StartLevelTimer());
 
         ToggleCharacterMovement(true);
 
@@ -289,7 +314,7 @@ public class GameManager : MonoBehaviour
         float levelEndTime = Time.time + levelTimer;
 
         timeLeft = Mathf.Abs(levelEndTime - levelStartTime);
-        while(timeLeft > 0.01f)
+        while(timeLeft > 0.01f && ! stopTimer)
         {
             timeLeft = Mathf.Abs(levelEndTime - Time.time);
             yield return new WaitForEndOfFrame();
@@ -307,6 +332,16 @@ public class GameManager : MonoBehaviour
         //Game Ove
         //increment day by one
         //have press any key to restart
+
+    }
+
+    private void StopTimer()
+    {
+        StopCoroutine(timer);
+        //stopTimer = true;
+
+        Color newBackground = timerText.transform.parent.GetComponent<Image>().color;
+        newBackground.a = 0f;
 
     }
 
