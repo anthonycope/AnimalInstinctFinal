@@ -24,11 +24,14 @@ public class Key : MonoBehaviour
             if (type == 0)
             {
                 Character.canUnlockDog = true;
+                GameObject.Find("GameManager").GetComponent<GameManager>().ShowText(0);
                 this.gameObject.SetActive(false);
+
             }
             else if(type == 1)
             {
                 Character.canUnlockDragon = true;
+                GameObject.Find("GameManager").GetComponent<GameManager>().ShowText(1);
                 this.gameObject.SetActive(false);
             }
         }

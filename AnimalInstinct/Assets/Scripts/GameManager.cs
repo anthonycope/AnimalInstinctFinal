@@ -76,6 +76,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void ShowText(int type)
+    {
+            StartCoroutine(ShowKeyText(type));
+    }
+
+    private IEnumerator ShowKeyText(int type)
+    {
+        if(type == 0)
+        {
+            GameObject.Find("DogKeyText").GetComponent<Text>().enabled = true;
+            yield return new WaitForSeconds(2f);
+            GameObject.Find("DogKeyText").GetComponent<Text>().enabled = false;
+        }
+        else
+        {
+            GameObject.Find("DragonKeyText").GetComponent<Text>().enabled = true;
+            yield return new WaitForSeconds(2f);
+            GameObject.Find("DragonKeyText").GetComponent<Text>().enabled = false;
+        }
+        yield return null;
+    }
+
     public void EndLevel()
     {
         StartCoroutine(showBeast());
