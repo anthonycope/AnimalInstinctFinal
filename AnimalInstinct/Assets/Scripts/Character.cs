@@ -14,10 +14,13 @@ public class Character : MonoBehaviour
 	public bool canMove;
 	private bool facingRight = false;
 
+	private Animator myAnimator;
+
 	// Use this for initialization
 	void Start ()
 	{
 		characterRigidBody = GetComponent<Rigidbody2D> ();
+		myAnimator = GetComponent<Animator> ();
 		canMove = true;
 
 		if (type == CharacterType.Dog) {
@@ -56,6 +59,13 @@ public class Character : MonoBehaviour
 		} else if (!facingRight && horizontal > 0) {
 			Flip ();
 			facingRight = true;
+		} 
+
+		if (horizontal > 0 || horizontal < 0) {
+			myAnimator.SetInteger ("Movement", 1);
+		} else {
+			myAnimator.SetInteger ("Movement", 0);
+
 		}
 
 		//Only jump if character hasn't jump already
