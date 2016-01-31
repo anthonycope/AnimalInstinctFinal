@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     private bool allowCharacterMovement;
 
-    float levelTimer = 60f;
+    float levelTimer = 660f;
     public float timeLeft;
 
     Character[] characters;
