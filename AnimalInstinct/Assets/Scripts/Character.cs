@@ -59,17 +59,26 @@ public class Character : MonoBehaviour
 		} else if (!facingRight && horizontal > 0) {
 			Flip ();
 			facingRight = true;
-		} 
-
-		if (horizontal > 0 || horizontal < 0) {
-			myAnimator.SetInteger ("Movement", 1);
-		} else {
-			myAnimator.SetInteger ("Movement", 0);
-
 		}
 
-		//Only jump if character hasn't jump already
-		if ((characterRigidBody.velocity.y == 0 && vertical > 0) || (type == CharacterType.Dragon && vertical > 0 && characterRigidBody.velocity.y < 0)) {
+        if (horizontal > 0 || horizontal < 0)
+        {
+            myAnimator.SetInteger("Movement", 1);
+        }
+        else
+        {
+            myAnimator.SetInteger("Movement", 0);
+
+        }
+
+        if (vertical > 0f)
+        {
+            AudioSource sound = this.GetComponent<AudioSource>();
+            sound.Play();
+        }
+
+        //Only jump if character hasn't jump already
+        if ((characterRigidBody.velocity.y == 0 && vertical > 0) || (type == CharacterType.Dragon && vertical > 0 && characterRigidBody.velocity.y < 0)) {
 			characterRigidBody.AddForce (new Vector2 (0, jump), ForceMode2D.Impulse);
 		}
 
