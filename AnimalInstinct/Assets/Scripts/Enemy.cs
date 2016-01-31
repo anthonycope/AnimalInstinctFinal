@@ -15,7 +15,9 @@ public class Enemy : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other){
 		if(other.gameObject.tag.Equals("Player")){
-			DestroyObject (this.gameObject);
+			if (other.gameObject.GetComponent<Character> ().type == CharacterType.Dog) {
+				DestroyObject (this.gameObject);
+			}
 		}
 	}
 }
