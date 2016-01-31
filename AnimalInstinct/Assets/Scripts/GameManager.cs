@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     CanvasGroup introAnimationCanvas;
     CanvasGroup gameCanvas;
     CanvasGroup retryPanel;
+    CanvasGroup winCanvas;
 
     GameObject levelOne;
 
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         introAnimationCanvas = GameObject.Find("IntroCanvas").GetComponent<CanvasGroup>();
         gameCanvas   = GameObject.Find("GameCanvas").GetComponent<CanvasGroup>();
         retryPanel = GameObject.Find("RetryPanel").GetComponent<CanvasGroup>();
+        winCanvas = GameObject.Find("WinCanvas").GetComponent<CanvasGroup>();
         levelOne = GameObject.Find("LevelOne");
 
         ownerReturnsAnimation = GameObject.Find("OwnerReturnsAnimation");
@@ -60,6 +62,11 @@ public class GameManager : MonoBehaviour
         {
             StartGame();
         }
+    }
+
+    public void EndLevel()
+    {
+        ToggleCanvas(winCanvas, true);
     }
 
     private void showMainMenu()
@@ -80,6 +87,8 @@ public class GameManager : MonoBehaviour
         mainMenuCanvas.alpha = 1f;
         mainMenuCanvas.interactable = true;
         mainMenuCanvas.blocksRaycasts = true;
+
+        ToggleCanvas(winCanvas, false);
 
         atMainMenu = true;
         atRetry = false;
@@ -275,6 +284,7 @@ public class GameManager : MonoBehaviour
 
         ToggleCanvas(retryPanel, true);
     }
+
 
     public void ReduceTime()
     {
