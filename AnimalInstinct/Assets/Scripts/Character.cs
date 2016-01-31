@@ -28,6 +28,10 @@ public class Character : MonoBehaviour
 		} else if (type == CharacterType.Cat) {
 			InitializeCat ();
 		}
+        else if(type == CharacterType.Dragon)
+        {
+            InitializeDragon();
+        }
 	}
 
 	private void InitializeCat ()
@@ -40,11 +44,43 @@ public class Character : MonoBehaviour
 		canMove = false;
 	}
 
-	// Update is called once per frame
-	void Update ()
+    private void InitializeDragon()
+    {
+        canMove = false;
+    }
+
+    // Update is called once per frame
+    void Update ()
 	{
 		if (canMove) {
 			Move ();
+            if(type == CharacterType.Dragon)
+            {
+                if(Input.GetKeyDown(KeyCode.Space))
+                {
+                    ShootFire(true);
+                }
+                else if(Input.GetKeyUp(KeyCode.Space))
+                {
+                    ShootFire(false);
+                }
+                ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
+
+                if (facingRight)
+                {
+                    Vector3 angles = ps.transform.rotation.eulerAngles;
+                    Quaternion newRotation = ps.transform.rotation;
+                    newRotation.z = 0f;
+                    ps.transform.rotation = newRotation;
+                }
+                else
+                {
+                    Vector3 angles = ps.transform.rotation.eulerAngles;
+                    Quaternion newRotation = ps.transform.rotation;
+                    newRotation.z = 180f;
+                    ps.transform.rotation = newRotation;
+                }
+            }
 		}
 	}
 
@@ -108,6 +144,51 @@ public class Character : MonoBehaviour
 		transform.localScale = theScale;
 	}
 
+    private void ShootFire(bool start)
+    {
+        if (start)
+        {
+            ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
+            var em = ps.emission;
+            em.enabled = true;
+            //var rate = em.rate;
+
+            //rate.constantMax = 1000f;
+
+            //em.rate = rate;
+
+            if (facingRight)
+            {
+                Vector3 angles = ps.transform.rotation.eulerAngles;
+                Quaternion newRotation = ps.transform.rotation;
+                newRotation.z = 0f;
+                ps.transform.rotation = newRotation;
+            }
+            else
+            {
+                Vector3 angles = ps.transform.rotation.eulerAngles;
+                Quaternion newRotation = ps.transform.rotation;
+                newRotation.z = 180f;
+                ps.transform.rotation = newRotation;
+            }
+            ps.Play();
+
+        }
+        else
+        {
+            ParticleSystem ps = GetComponentInChildren<ParticleSystem>();
+            var em = ps.emission;
+
+            //var rate = em.rate;
+
+            //rate.constantMax = 0f;
+
+            //em.rate = rate;
+
+            em.enabled = false;
+        }
+
+    }
 }
 
 

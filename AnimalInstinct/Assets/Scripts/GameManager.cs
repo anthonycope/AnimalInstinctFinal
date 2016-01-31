@@ -66,7 +66,22 @@ public class GameManager : MonoBehaviour
 
     public void EndLevel()
     {
+        StartCoroutine(showBeast());
+    }
+
+    private IEnumerator showBeast()
+    {
+
         ToggleCanvas(winCanvas, true);
+
+        yield return new WaitForSeconds(1.5f);
+
+        ToggleCanvas(winCanvas, false);
+
+        SwitchCharacter(2);
+        Camera.main.GetComponent<MainCamera>().SwitchPlayer();
+
+        yield return null;
     }
 
     private void showMainMenu()
@@ -133,6 +148,22 @@ public class GameManager : MonoBehaviour
                 }
             }
 
+        }
+        else if(type == 2)
+        {
+            foreach (Character c in characters)
+            {
+                if (c.type == CharacterType.Dragon)
+                {
+                    c.canMove = true;
+                    c.gameObject.tag = "Player";
+                }
+                else
+                {
+                    c.canMove = false;
+                    c.gameObject.tag = "Untagged";
+                }
+            }
         }
 
     }
@@ -258,7 +289,11 @@ public class GameManager : MonoBehaviour
         {
             timeLeft = Mathf.Abs(levelEndTime - Time.time);
             yield return new WaitForEndOfFrame();
-            timerText.text = "Time: " + Mathf.Round(timeLeft);           
+            timerText.text = "Time: " + Mathf.Round(timeLeft);
+            Color newBackground = timerText.transform.parent.GetComponent<Image>().color;
+            newBackground.a = Mathf.Lerp(1f, 0f, ((timeLeft / levelTimer)));
+           
+            timerText.transform.parent.GetComponent<Image>().color = newBackground;   
         }
 
         yield return null;
