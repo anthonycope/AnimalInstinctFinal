@@ -16,6 +16,9 @@ public class Character : MonoBehaviour
 
 	private Animator myAnimator;
 
+    public static bool canUnlockDog;
+    public static bool canUnlockDragon;
+
 	// Use this for initialization
 	void Start ()
 	{

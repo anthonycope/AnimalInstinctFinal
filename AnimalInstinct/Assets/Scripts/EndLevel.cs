@@ -18,7 +18,7 @@ public class EndLevel : MonoBehaviour {
         if (other.tag.Equals("Player"))
         {
             //free dog
-            GameObject.Find("GameManager").GetComponent<GameManager>().EndLevel();
+
            // this.gameObject.SetActive(false);
         }
     }

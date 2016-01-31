@@ -32,12 +32,16 @@ public class GameManager : MonoBehaviour
 
     public Transform firstLoad;
 
+    private float timeLost;
+
     void Awake()
     {
         if (firstLoad)
         {
             DontDestroyOnLoad(firstLoad);
         }
+
+        timeLost = 0f;
     }
 
 	// Use this for initialization
@@ -261,6 +265,7 @@ public class GameManager : MonoBehaviour
         ToggleCanvas(introAnimationCanvas, false);
         ToggleCanvas(retryPanel, false);
         ownerReturnsAnimation.SetActive(false);
+        ToggleCanvas(winCanvas, false);
 
         ToggleCanvas(gameCanvas, true);
 
@@ -284,7 +289,6 @@ public class GameManager : MonoBehaviour
         float levelEndTime = Time.time + levelTimer;
 
         timeLeft = Mathf.Abs(levelEndTime - levelStartTime);
-
         while(timeLeft > 0.01f)
         {
             timeLeft = Mathf.Abs(levelEndTime - Time.time);
@@ -323,6 +327,6 @@ public class GameManager : MonoBehaviour
 
     public void ReduceTime()
     {
-        
+        timeLeft -= 5f;
     }
 }
