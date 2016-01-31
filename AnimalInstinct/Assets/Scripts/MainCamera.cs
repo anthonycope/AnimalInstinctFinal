@@ -54,7 +54,7 @@ public class MainCamera : MonoBehaviour
             Vector3 delta = player.position - GetComponent<Camera>().ViewportToWorldPoint(new Vector3(0.5f, 0.40f, 5F));
             Vector3 destination = transform.position + delta;
 
-            nonMovingCameraLocation = new Vector3(player.position.x, -4, -5F);
+            nonMovingCameraLocation = new Vector3(player.position.x, -6.5F, -5F);
 
             transform.position = Vector3.SmoothDamp(transform.position, nonMovingCameraLocation, ref velocity, dampTime);
         }
