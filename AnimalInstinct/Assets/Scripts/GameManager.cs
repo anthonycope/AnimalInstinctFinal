@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     public bool atMainMenu;
     public bool atRetry;
-    bool inGame;
+    public bool inGame;
 
     private bool allowCharacterMovement;
 
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
 
     private Coroutine timer;
 
-    private bool stopTimer;
+    float levelEndTime;
 
     void Awake()
     {
@@ -311,18 +311,30 @@ public class GameManager : MonoBehaviour
     private IEnumerator StartLevelTimer()
     {
         float levelStartTime = Time.time;
-        float levelEndTime = Time.time + levelTimer;
+        levelEndTime = Time.time + levelTimer;
 
         timeLeft = Mathf.Abs(levelEndTime - levelStartTime);
-        while(timeLeft > 0.01f && ! stopTimer)
+        while(timeLeft > 0.01f)
         {
-            timeLeft = Mathf.Abs(levelEndTime - Time.time);
+            timeLeft = levelEndTime - Time.time;
             yield return new WaitForEndOfFrame();
             timerText.text = "Time: " + Mathf.Round(timeLeft);
             Color newBackground = timerText.transform.parent.GetComponent<Image>().color;
             newBackground.a = Mathf.Lerp(1f, 0f, ((timeLeft / levelTimer)));
            
             timerText.transform.parent.GetComponent<Image>().color = newBackground;   
+        }
+
+        if(timeLeft <= 0)
+        {
+            timeLeft = 0f;
+
+            timerText.text = "Time: " + 0;
+            Color newBackground = timerText.transform.parent.GetComponent<Image>().color;
+            newBackground.a = 1f;
+
+            timerText.transform.parent.GetComponent<Image>().color = newBackground;
+
         }
 
         yield return null;
@@ -362,6 +374,6 @@ public class GameManager : MonoBehaviour
 
     public void ReduceTime()
     {
-        timeLeft -= 5f;
+        levelEndTime -= 5f;
     }
 }

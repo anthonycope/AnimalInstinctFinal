@@ -10,7 +10,7 @@ public class Character : MonoBehaviour
 	public int jump = 1;
 
 	private Rigidbody2D characterRigidBody;
-	private Renderer myRenderer;
+	private Renderer renderer;
 	public bool canMove;
 	private bool facingRight = false;
 
@@ -24,6 +24,7 @@ public class Character : MonoBehaviour
 	{
 		characterRigidBody = GetComponent<Rigidbody2D> ();
 		myAnimator = GetComponent<Animator> ();
+        renderer = GetComponent<Renderer>();
 		canMove = true;
 
 		if (type == CharacterType.Dog) {
@@ -127,17 +128,25 @@ public class Character : MonoBehaviour
 		characterRigidBody.velocity = new Vector2 (horizontal * speed, characterRigidBody.velocity.y);
 	}
 
-	private IEnumerator CharacterHit ()
+	public IEnumerator CharacterHit ()
 	{
 		int initialSpped = speed;
-		speed = 1;
-		myRenderer.material.color = new Color (myRenderer.material.color.r, myRenderer.material.color.g, myRenderer.material.color.b, 0.5F);
-
+        speed = speed / 2;
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach(Renderer renderer in renderers)
+        {
+            renderer.material.color = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, 0.5F);
+        }
+        WaterDrop.canCollide = false;
+        Enemy.canCollide = false;
 		yield return new WaitForSeconds (3F);
-
+        WaterDrop.canCollide = true;
+        Enemy.canCollide = true;
 		speed = initialSpped;
-		myRenderer.material.color = new Color (myRenderer.material.color.r, myRenderer.material.color.g, myRenderer.material.color.b, 1F);
-
+        foreach (Renderer renderer in renderers)
+        {
+            renderer.material.color = new Color(renderer.material.color.r, renderer.material.color.g, renderer.material.color.b, 1F);
+        }
 	}
 
 	private void Flip ()

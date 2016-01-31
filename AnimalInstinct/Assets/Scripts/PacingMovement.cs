@@ -21,8 +21,8 @@ public class PacingMovement : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update ()
-	{
-		if ((Vector3.Distance (transform.position, targetPosition) < distance)) {
+	{        
+        if ((Vector3.Distance (transform.position, targetPosition) < distance)) {
 			NextPoint ();
 		} else {
 			float direction = speed * Time.deltaTime;
@@ -37,5 +37,13 @@ public class PacingMovement : MonoBehaviour
 			currentPoint++;
 		}
 		targetPosition = waypoints [currentPoint].transform.position;
+        Flip();
 	}
+
+    private void Flip()
+    {
+        Vector3 theScale = transform.localScale;
+        theScale.x *= -1;
+        transform.localScale = theScale;
+    }
 }
