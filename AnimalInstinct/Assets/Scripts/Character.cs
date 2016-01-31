@@ -74,7 +74,10 @@ public class Character : MonoBehaviour
         if (vertical > 0f)
         {
             AudioSource sound = this.GetComponent<AudioSource>();
-            sound.Play();
+            if (!sound.isPlaying)
+            {
+                sound.Play();
+            }
         }
 
         //Only jump if character hasn't jump already
