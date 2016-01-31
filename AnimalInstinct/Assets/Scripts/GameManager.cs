@@ -218,6 +218,11 @@ public class GameManager : MonoBehaviour
 	{
 		CheckInput();
 
+		if(Input.GetKeyDown(KeyCode.Escape))
+			{
+				Application.Quit();
+			}
+
 	}
 
 	private void CheckInput()
